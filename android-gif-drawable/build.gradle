@@ -1,8 +1,10 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.vanniktech.maven.publish'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 
-group = 'pl.droidsonroids.gif'
-description = 'Views and Drawable for displaying animated GIFs for Android'
+group = "com.github.guftal"
+version = "1.2.25"
 
 android {
     ndkVersion versions.ndk
@@ -18,25 +20,36 @@ android {
         targetSdkVersion versions.targetSdk
         consumerProguardFiles 'consumer-proguard-rules.pro'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
         externalNativeBuild {
             cmake {
                 arguments "-DANDROID_PLATFORM=android-$versions.minSdk", "-DANDROID_STL=none"
-                cFlags '-std=c11', '-Weverything', '-Wall'
-                if (isDevelopmentBuild()) {
-                    cFlags '-DDEBUG', '-g'
-                } else {
-                    cFlags '-DNDEBUG', '-Os', '-g0', '-fvisibility=hidden'
-                }
+                cFlags '-std=c11', '-Wall'
             }
         }
     }
+
     externalNativeBuild {
         cmake {
             path 'src/main/c/CMakeLists.txt'
         }
     }
+
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = "com.github.guftal"
+                artifactId = "android-gif-drawable"
+                version = "1.2.25"
+            }
+        }
     }
 }
 
