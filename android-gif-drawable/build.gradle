@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.vanniktech.maven.publish'
 
 group = "com.github.guftal"
-version = "1.2.25"
+version = "1.2.27"
 description = 'Views and Drawable for displaying animated GIFs for Android'
 
 android {
